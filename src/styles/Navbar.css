@@ -1,0 +1,21 @@
+nav{
+    margin: 0;
+    background-color: #FF7276;
+    text-align: center;
+    padding: 10px;
+}
+
+nav a {
+    font-family: 'Roboto';
+    font-size: 1.5rem;
+    text-decoration: none;
+    padding: 10px;
+    color: antiquewhite;
+    opacity: 1;
+    transition: .2s ease-out;
+}
+
+nav a:hover {
+    background-color: rgb(255, 149, 153);
+    /* opacity: .8; */
+}
