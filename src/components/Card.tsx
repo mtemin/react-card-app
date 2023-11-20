@@ -1,7 +1,4 @@
-import { Card as MaterialCard, CardMedia, CardActions, ThemeProvider, createTheme, Button, Grid, Typography } from '@mui/material/';
-import SendIcon from '@mui/icons-material/Send';
-import CardDescription from './CardDescription';
-import CardTitle from './CardTitle';
+import { Card as MaterialCard, CardMedia, Grid, Typography } from '@mui/material/';
 import { CardInfo } from '../models/CardInfo';
 
 type CardProps = {
