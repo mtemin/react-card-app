@@ -1,6 +1,6 @@
 nav{
     margin: 0;
-    background-color: #FF7276;
+    background-color: #ED7979;
     text-align: center;
     padding: 10px;
 }
@@ -16,6 +16,6 @@ nav a {
 }
 
 nav a:hover {
-    background-color: rgb(255, 149, 153);
-    /* opacity: .8; */
+    background-color: rgb(240, 147, 147);
+
 }

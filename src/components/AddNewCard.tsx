@@ -1,4 +1,4 @@
-import { CardMedia, CardActions } from '@mui/material/';
+import { CardMedia, CardActions, Container } from '@mui/material/';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
@@ -6,7 +6,7 @@ import { Card as MaterialCard } from '@mui/material'
 
 import CardDescription from './CardDescription';
 import CardTitle from './CardTitle';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { db, storage } from '../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -14,13 +14,11 @@ import { collection, addDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 
 import Swal from 'sweetalert2';
-import CardList from './CardList';
 import { CardInfo } from '../models/CardInfo';
 
 type AddNewCardProps = {
     onSubmitNewCard: any;
 }
-
 
 export default function AddNewCard(props: AddNewCardProps) {
 
@@ -35,11 +33,8 @@ export default function AddNewCard(props: AddNewCardProps) {
         imageUrl: initialImage
     }
 
-    // let [imageUrl, setImageUrl] = useState(initialImage);
-    //let [title, setTitle] = useState(initialTitle);
-    //let [description, setDescription] = useState(initialDescription);
-
     let [cardInfo, setCardInfo] = useState({} as CardInfo);
+
     const setTitle = (title: string) => {
         setCardInfo({ ...cardInfo, title: title });
 
@@ -53,7 +48,6 @@ export default function AddNewCard(props: AddNewCardProps) {
         setImageFile(event.target.files[0]);
     }
 
-
     let [imageFile, setImageFile] = useState<File | null>(null);
 
     const uploadImage = async () => {
@@ -63,10 +57,7 @@ export default function AddNewCard(props: AddNewCardProps) {
             let url = await getDownloadURL(snapshot.ref);
             return url;
         }
-
         return null;
-
-
     }
 
     const cardActionsStyle = {
@@ -75,10 +66,8 @@ export default function AddNewCard(props: AddNewCardProps) {
         padding: '10px 0'
     }
 
-
     const createNewCard = async (event: any) => {
         event.preventDefault();
-        //TODO set loading
         if (!cardInfo.title || !cardInfo.description || !cardInfo.imageUrl) {
             Swal.fire({
                 title: "Hata",
@@ -103,55 +92,57 @@ export default function AddNewCard(props: AddNewCardProps) {
         const docRef = await addDoc(collection(db, "cards"), newCardValue);
         console.log("Document written with ID: ", docRef.id);
         setCardInfo({} as CardInfo);
-        
-        props.onSubmitNewCard({...newCardValue, id:docRef.id});
+
+        props.onSubmitNewCard({ ...newCardValue, id: docRef.id });
     }
 
-
+    const cardTitle = cardInfo.title ? cardInfo.title : initialCardInfo.title;
+    const cardDescription = cardInfo.description ? cardInfo.description : initialCardInfo.description;
+    const cardImageUrl = cardInfo.imageUrl ? cardInfo.imageUrl : initialCardInfo.imageUrl;
 
     return (
         <section id="insert-card">
-            <Grid container spacing={2} justifyContent="center">
-                <Grid item style={{ maxHeight: "100%" }} xs={12} sm={8} md={6} lg={4} xl={4} >
-                    <div>
-                        <MaterialCard className='card'>
-                            <div className="card-text-area">
-                                <div className="card-title">
-                                    <CardTitle title={cardInfo.title ? cardInfo.title : initialCardInfo.title} setTitle={setTitle} />
-                                </div>
-                                <div className="card-description">
-                                    <CardDescription
-                                        description={cardInfo.description ? cardInfo.description : initialCardInfo.description}
-                                        setDescription={setDescription} />
-                                </div>
+            <Container>
+                <Grid container spacing={2} justifyContent="center">
+                    <Grid item xs={12} sm={8} md={6} lg={4} xl={4} >
+                        <MaterialCard
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                height: "650px",
+                                padding: "0.5rem",
+                            }}>
+                            <CardTitle
+                                title={cardTitle}
+                                setTitle={setTitle}
+                                style={{ display: "inline" }} />
+                            <CardDescription
+                                description={cardDescription}
+                                setDescription={setDescription}
+                                style={{ height: "100%" }} />
+                            <div className="card-img" style={{ height: "50%" }}>
+                                <input type="file" onChange={handleImage} />
+                                <CardMedia
+                                    onChange={handleImage}
+                                    object-fit="cover"
+                                    component="img"
+                                    style={{ height: "100%" }}
+                                    image={cardImageUrl}
+                                    alt="Upload Image..." title="JSON Statham" />
                             </div>
-                            <div className="card-bottom-area">
-                                <div className="card-img">
-                                    <input type="file" onChange={handleImage} />
-                                    <CardMedia
-                                        onChange={handleImage}
-                                        object-fit="cover"
-                                        component="img"
-                                        style={{ height: "100%" }}
-                                        image={cardInfo.imageUrl ? cardInfo.imageUrl : initialCardInfo.imageUrl}
-                                        alt="Upload Image..." title="JSON Statham" />
-                                </div>
-                                <div className="card-btn">
-                                    <CardActions style={cardActionsStyle}>
-                                        <Button
-                                            variant="contained"
-                                            color="success"
-                                            startIcon={<SendIcon />}
-                                            onClick={createNewCard}>
-                                            Submit card</Button>
-                                    </CardActions>
-                                </div>
-                            </div>
+                            <CardActions style={cardActionsStyle}>
+                                <Button
+                                    variant="contained"
+                                    color="success"
+                                    startIcon={<SendIcon />}
+                                    onClick={createNewCard}>
+                                    Submit card</Button>
+                            </CardActions>
                         </MaterialCard>
-
-                    </div>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Container>
         </section>
     )
 }

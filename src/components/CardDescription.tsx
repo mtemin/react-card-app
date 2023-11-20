@@ -2,7 +2,7 @@ import { useState, useRef, } from "react";
 import EditIcon from '@mui/icons-material/Edit';
 import "../styles/Card.css"
 
-export default function CardDescription(props:any) {
+export default function CardDescription(props: any) {
     let [isDescriptionEditable, setIsDescriptionEditable] = useState(false);
 
     const descriptionAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -21,7 +21,6 @@ export default function CardDescription(props:any) {
             event.target.select();
         }
     }
-
 
     return (
         <>

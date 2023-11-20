@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useRef } from "react";
 import "../styles/Card.css"
 
 
-export default function CardTitle(props:any) {
+export default function CardTitle(props: any) {
     let [isTitleEditable, setIsTitleEditable] = useState(false);
-    
+
     const titleAreaRef = useRef<HTMLTextAreaElement>(null);
-    
+
     function toggleIsTitleEditable() {
         setIsTitleEditable(!isTitleEditable);
         setTimeout(() => {
@@ -23,10 +23,10 @@ export default function CardTitle(props:any) {
     }
 
     return (
-        <Fragment >
-            {isTitleEditable ?
+        <>
+            {isTitleEditable
+                ?
                 <textarea value={props.title} ref={titleAreaRef} className="title-input" placeholder="Write a title..."
-                    // onClick={() => { isTitleEditable ? setisTitleEditable(false) : setisTitleEditable(true) }}
                     onChange={(event) => props.setTitle(event.target.value)}
                     onClick={handleTextSelection}
                 />
@@ -35,6 +35,6 @@ export default function CardTitle(props:any) {
                     {props.title}
                 </p>
             }
-        </Fragment>
+        </>
     )
 }
