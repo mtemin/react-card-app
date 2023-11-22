@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddNewCard from "../components/AddNewCard";
 import CardList from "../components/CardList"
 import { CardInfo } from "../models/CardInfo";
@@ -16,6 +16,13 @@ export default function Home() {
     const addCardToList = (newCardInfo: CardInfo) => {
         setCards([newCardInfo, ...cards]);
     }
+
+    useEffect(
+        () => {
+            fetchData();
+        }
+        ,[])
+
     return (
         <>
             <AddNewCard onSubmitNewCard={ addCardToList} />

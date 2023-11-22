@@ -25,7 +25,8 @@ export default function Card(props: CardProps) {
           <Typography gutterBottom variant="subtitle1" component="p"
             sx={{
               height: "40%",
-              overflow: "scroll",
+              overflowX: "hidden",
+              overflowY: "scroll",
               border: "1px solid #4B4B4B",
               borderRadius: "5px",
               padding: "5px"
